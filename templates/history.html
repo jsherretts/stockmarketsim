@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+<style>
+    .table
+    {
+        margin-bottom: 1rem;
+        background-color: transparent;
+        text-align: left;
+        border-collapse: collapse;
+        border-spacing: 2px;
+        border-color: grey;
+    }
+</style>
+
+{% block main %}
+    <table class = "table">
+        <tr>
+            <th>Stock Symbol</th>
+            <th>Company Name</th>
+            <th>Shares</th>
+            <th>Transcation Price per Stock</th>
+            <th>Total Transcation Value</th>
+            <th>Transaction Type</th>
+            <th>Time</th>
+        </tr>
+        {% for stock in rows%}
+            <tr>
+                <td>{{ stock.symbol }}</td>
+                <td>{{ stock.name }}</td>
+                <td>{{ stock.shares }}</td>
+                <td>${{ stock.price }} </td>
+                <td>{{ stock.totalPrice }}</td>
+                <td>{{ stock.type }}</td>
+                <td>{{ stock.time }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+{% endblock %}
+

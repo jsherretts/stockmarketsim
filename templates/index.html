@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+<style>
+    .table
+    {
+        margin-bottom: 1rem;
+        background-color: transparent;
+        text-align: left;
+        border-collapse: collapse;
+        border-spacing: 2px;
+        border-color: grey;
+    }
+</style>
+
+{% block main %}
+    <table class = "table">
+        <tr>
+            <th>Stock</th>
+            <th>Company Name</th>
+            <th>Shares</th>
+            <th>Current Price</th>
+            <th>Total Value</th>
+        </tr>
+        {% for stock in rows%}
+            {% if stock.totalShares > 0 %}
+            <tr>
+                <td>{{ stock.symbol }}</td>
+                <th>{{ stock.name }}</th>
+                <td>{{ stock.totalShares }}</td>
+                <td>{{ stock.price }} </td>
+                <td>{{ stock.totalPrice }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+        <p>Current Cash Balance: {{ cash }} </p>
+        <p>Grand Total: {{ grandTotal }}</p>
+{% endblock %}
+

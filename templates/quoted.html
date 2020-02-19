@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Stock Quotes
+{% endblock %}
+
+{% block main %}
+    <p>The current price of {{ stock.symbol }} is {{ price }}.</p>
+    <p>{{ stock.symbol }} is the stock of {{ stock.name }}.</p>
+{% endblock %}
