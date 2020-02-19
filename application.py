@@ -42,6 +42,7 @@ if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
 
 
+#Gives the homepage, where users can access the overall value of holdings of their portfolio
 @app.route("/")
 @login_required
 def index():
@@ -60,6 +61,7 @@ def index():
     cash = rows2[0]["cash"]
     return render_template("index.html", rows = rows, cash = usd(cash), grandTotal = usd(grandTotal + cash))
 
+#Gives users the option to add cash, if they decide they want to invest more
 @app.route("/addcash", methods=["GET", "POST"])
 @login_required
 def addcash():
@@ -77,6 +79,8 @@ def addcash():
         return redirect("/")
 
 
+#allows users to buy stock by calling the API to access the real-time price of the searched stock and subtracting the equivalent value from cash and adding stocks to portfolio
+#transaction is denied if user does not have enough cash
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
@@ -107,6 +111,7 @@ def buy():
     # return apology("TODO")
 
 
+#accesses the SQL database history of past transactions
 @app.route("/history")
 @login_required
 def history():
@@ -119,19 +124,7 @@ def history():
         stock["name"] = info["name"]
 
     return render_template("history.html", rows = rows)
-    # rows = db.execute("SELECT symbol, SUM(shares) AS shares FROM transactions WHERE user_id = :id GROUP BY symbol", id = session["user_id"])
-    # stock = {}
-    # grandTotal = 0
-    # for stock in rows:
-    #     info = lookup(stock["symbol"])
-    #     # stock["stock"] = info["symbol"]
-    #     stock["totalShares"] = int(stock["shares"])
-    #     stock["price"] = usd(info["price"])
-    #     stock["totalPrice"] = usd(stock["totalShares"] * info["price"])
-    #     grandTotal += stock["totalShares"] * info["price"]
-    # rows2 = db.execute("SELECT cash FROM users WHERE id = :id", id = session["user_id"])
-    # cash = rows2[0]["cash"]
-    # return render_template("index.html", rows = rows, cash = usd(cash), grandTotal = usd(grandTotal + cash))
+
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -182,6 +175,7 @@ def logout():
     return redirect("/")
 
 
+#returns the price of any current stock seached
 @app.route("/quote", methods=["GET", "POST"])
 @login_required
 def quote():
@@ -203,6 +197,8 @@ def quote():
     # return apology("TODO")
 
 
+#allows users to register for a new account/portfolio
+#password is secured with a hash
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
@@ -233,6 +229,8 @@ def register():
     # return apology("TODO")
 
 
+#allows users to sell stock by calling the API to access the real-time price of the searched stock and adding the equivalent value from cash and subtracting stocks to portfolio
+#transaction is denied if user does not have enough stock
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
